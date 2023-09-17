@@ -1,0 +1,30 @@
+version: '2.1'
+
+services:
+  web:
+    build: .
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/project
+    ports:
+      - '8000:8000'
+    depends_on:
+      db:
+        condition: service_healthy
+
+  db:
+    image: postgres:11.1
+    volumes:
+      - postgres_data:/usr/local/bvin/postgres
+    ports:
+      - '5432:5432'
+    environment:
+      - POSTGRES_DB=task_db
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U postgres']
+      interval: 5s
+      timeout: 2s
+      retries: 3
+
+volumes:
+  postgres_data:

@@ -1,0 +1,19 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+django = "3.2.21"
+djangorestframework = "3.14.0"
+djangorestframework-simplejwt = "5.3.0"
+dj-database-url = "2.1.0"
+flake8 = "5.0.4"
+django-extensions = "3.2.3"
+pytest-cov = "4.1.0"
+coverage = "7.2.7"
+
+[dev-packages]
+
+[requires]
+python_version = "3.7"
