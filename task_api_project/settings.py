@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 from datetime import timedelta
 from pathlib import Path
 import dj_database_url
+import os
+import sys
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -80,17 +82,19 @@ WSGI_APPLICATION = 'task_api_project.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
+TEST_MODE = 'test' in sys.argv or sys.argv[0].endswith('py.test')
+DB_NAME = 'task_db'
+PROD_DB_CONF = f'postgres://postgres@db:5432/{DB_NAME}'
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+if TEST_MODE:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
     }
-}
-
-# conf_string_dckr = 'postgres://postgres@db:5432/task_db'
-# DATABASES = {'default': dj_database_url.config(default=conf_string_dckr)}
-
+else:
+    DATABASES = {'default': dj_database_url.config(default=PROD_DB_CONF)}
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
